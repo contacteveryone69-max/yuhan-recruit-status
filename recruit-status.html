@@ -950,13 +950,13 @@ let state=(function(){
 })();
 if(!state || !state.departments) state=seed();
 state=normalize(state);
-function saveState(){ try{ localStorage.setItem(LS3, JSON.stringify(state)); }catch(e){} cloudSave(); }
-saveState();
 
 /* ===== 클라우드(Firebase) 실시간 동기화 =====
    전체 state를 JSON 문자열로 한 문서(app/state)에 저장 → 누가 바꾸면 onSnapshot으로 모두에게 반영.
    설정값이 비어 있으면 cloud.enabled=false 로 두고 기존 localStorage 모드 그대로 동작. */
 let cloud={ enabled:false, db:null, ref:null, ready:false, pending:false, applying:false };
+function saveState(){ try{ localStorage.setItem(LS3, JSON.stringify(state)); }catch(e){} cloudSave(); }
+saveState();
 function cloudConfigured(){ const c=window.YH_FIREBASE_CONFIG||{}; return !!(c.apiKey && c.projectId); }
 function anyModalOpen(){ return !!document.querySelector('.modal-back:not(.hidden), .board-back:not(.hidden)'); }
 function cloudSave(){
