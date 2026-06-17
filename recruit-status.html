@@ -31,7 +31,8 @@
   .who{font-size:13px;color:var(--muted)}.who b{color:var(--ink)}
   .role-pill{font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;background:var(--yh-green-light);color:var(--yh-green-dark);}
   .role-pill.admin{background:#FBF1DD;color:#8a6a2c}
-  .btn-ghost{background:transparent;border:1px solid var(--line);color:var(--text);padding:7px 13px;border-radius:8px;font-size:13px;font-weight:600;}
+  .btn-ghost{background:transparent;border:1px solid var(--line);color:var(--text);padding:7px 13px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer}
+  .btn-ghost.danger{border-color:#eccecc;color:var(--danger)}.btn-ghost.danger:hover{background:#fbf0ef}
   .btn-ghost:hover{background:var(--yh-green-tint);border-color:var(--yh-green-light)}
 
   /* ===== 로그인 (유한양행 브랜드 2단 구성) ===== */
@@ -332,6 +333,9 @@
   .sum-link{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;color:var(--yh-green-dark);font-weight:700;padding-top:10px;margin-top:4px;border-top:1px solid var(--line)}
   .sum-link span.ic{color:#b9c3bc}
   .col-prog{font-size:11px;font-weight:700;color:var(--yh-green-dark);background:var(--yh-green-light);padding:3px 11px;border-radius:999px;margin-top:9px}
+  .col-allbtn{display:block;width:100%;margin:10px 0 4px;padding:7px 0;border-radius:8px;border:1px solid var(--yh-green);background:var(--yh-green);color:#fff;font-size:12px;font-weight:700;cursor:pointer}
+  .col-allbtn:hover{background:var(--yh-green-dark)}
+  .col-allbtn.done{background:#eef3ef;border-color:var(--line);color:var(--muted);cursor:default}
   .chk-conn{width:2px;height:9px;background:#cfd8d2;margin:0 auto}
   .chk-item{display:flex;align-items:center;gap:11px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:11px 13px;box-shadow:0 1px 2px rgba(0,0,0,.05);transition:.15s}
   .chk-box{width:25px;height:25px;border-radius:50%;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:var(--muted);flex:0 0 auto}
@@ -536,9 +540,9 @@
     <section id="tab-manage" class="hidden">
       <div class="page-head">
         <div><h1>계정 관리</h1><div class="sub">시스템 접속 계정을 관리합니다. 관리자 외 계정은 ‘일반’으로, 본인 부서 현황을 조회 전용으로 봅니다.</div></div>
-        <div style="display:flex;gap:8px"><button class="btn-ghost" onclick="openAcctBulkModal()">⊕ 계정 일괄 관리</button><button class="btn-ghost" onclick="openAcctModal()">+ 계정 추가</button></div>
+        <div style="display:flex;gap:8px"><button class="btn-ghost danger" onclick="deleteSelectedAccts()">🗑 선택 삭제</button><button class="btn-ghost" onclick="openAcctBulkModal()">⊕ 계정 일괄 관리</button><button class="btn-ghost" onclick="openAcctModal()">+ 계정 추가</button></div>
       </div>
-      <div class="panel"><table><thead><tr><th>구분</th><th>아이디</th><th>성명</th><th>부서</th><th>직책/직급</th><th>등록일</th><th>관리</th></tr></thead><tbody id="manageBody"></tbody></table></div>
+      <div class="panel"><table><thead><tr><th style="width:34px"><input type="checkbox" id="acctSelAll" onclick="toggleAllAcct(this)" title="전체 선택"></th><th>구분</th><th>아이디</th><th>성명</th><th>부서</th><th>직책/직급</th><th>등록일</th><th>관리</th></tr></thead><tbody id="manageBody"></tbody></table></div>
     </section>
 
     <section id="tab-mail" class="hidden">
@@ -612,7 +616,7 @@
       <div class="section-title" style="margin-top:18px">면접 정보 <span class="hint-inline" style="margin-left:6px">· 마감일이 공란이면 시작일 당일만 진행</span></div>
       <div id="iv_sessions"></div>
       <button type="button" class="mini" onclick="addIvSession()">+ 면접 세션 추가</button>
-      <div class="form-field full" style="margin-top:14px"><label>배석자 <span class="hint-inline">· 전체 공통</span></label><textarea id="iv_obs" style="min-height:52px" placeholder="예: 인사팀 김주임"></textarea></div>
+      <div class="hint-inline" style="display:block;margin-top:8px">· 배석자는 각 면접 세션(회차)별로 입력합니다. 1·2차로 나뉘면 회차마다 따로 지정하세요.</div>
       <div class="section-title" style="margin-top:18px">등록 계정 <span class="hint-inline" style="margin-left:6px">· 이 전형을 조회할 수 있는 계정을 선택하세요. 계정은 ‘계정 관리’ 탭에서 만듭니다.</span></div>
       <div id="f_accounts"></div>
       <div class="form-field full" style="margin-top:18px"><label>비고 <span class="hint-inline">· 진행 단계는 전형 상세 보드 체크리스트로 자동 표시됩니다. 여기에는 특이사항만 적어주세요.</span></label><textarea id="f_notes" placeholder="특이사항, 메모 등 (선택)"></textarea></div>
@@ -788,6 +792,9 @@ function normalize(st){
     if(!iv.sessions.length && (iv.timeStart||iv.place||iv.panel)){
       iv.sessions=[{round:"통합",date:iv.s||"",ts:iv.timeStart||"",te:iv.timeEnd||"",place:iv.place||"",panel:iv.panel||""}];
     }
+    // 배석자: 공통(observers) → 회차별(session.obs)로 이관
+    iv.sessions.forEach(s=>{ if(s.obs==null) s.obs=""; });
+    if(iv.observers && iv.sessions.length){ iv.sessions.forEach(s=>{ if(!s.obs) s.obs=iv.observers; }); iv.observers=""; }
     d.schedule=ns;
     // 계정: 구버전 dept.accounts(전형 종속) → 전역 state.accounts + dept.accountUsers(참조)로 이관
     if(!Array.isArray(d.accountUsers)) d.accountUsers=[];
@@ -940,12 +947,12 @@ function renderDeptGrid(){
       <div class="dc-actions">
         <select class="mini" style="padding:6px 8px" onchange="quickStage('${d.id}',this.value)">${STAGES.map(s=>`<option ${s===d.stage?'selected':''}>${s}</option>`).join("")}</select>
         <button class="mini" onclick="openDeptModal('${d.id}')">상세 편집</button>
-        <button class="mini ok" onclick="completeDept('${d.id}')">완료</button>
+        <button class="mini ok" style="margin-left:auto" onclick="completeDept('${d.id}')">완료</button>
         <button class="mini del" onclick="deleteDept('${d.id}')">삭제</button>
       </div>
     </div>`).join("");
 }
-function quickStage(i,stage){ const d=getDept(i); d.stage=stage; d.updated=today(); saveState(); renderAll(); toast(`${d.name} → ${stage} 단계로 변경됨`); }
+function quickStage(i,stage){ const d=getDept(i); d.stage=stage; autoCheckPriorColumns(d); d.updated=today(); saveState(); renderAll(); toast(`${d.name} → ${stage} 단계로 변경됨`); }
 function completeDept(i){ const d=getDept(i); if(!d) return;
   if(!confirm(`'${d.name}' 전형을 정말 완료하시겠습니까?\n모든 체크리스트가 완료로 반영되고 ‘입사’ 단계로 전환된 뒤 ‘완료된 전형’으로 이동합니다.`)) return;
   d.checklist=d.checklist||{};
@@ -984,6 +991,7 @@ function reopenDept(i){ const d=getDept(i); if(!d) return; if(!confirm(`'${d.nam
 
 function renderManage(){
   const rows=[`<tr>
+    <td></td>
     <td><span class="role-pill admin">관리자</span></td>
     <td><span class="mono">${esc(ADMIN.user)}</span></td>
     <td>시스템 관리자</td>
@@ -998,6 +1006,7 @@ function renderManage(){
       ? '<span style="color:var(--muted)">전체</span>'
       : `${a.dept?esc(a.dept):'<span style="color:var(--muted)">-</span>'}${regCount?` <span class="hint-inline">· 전형 ${regCount}건 등록</span>`:' <span class="hint-inline">· 미등록</span>'}`;
     rows.push(`<tr>
+      <td><input type="checkbox" class="acct-cb" value="${ai}"></td>
       <td><span class="role-pill ${isAdmin?'admin':''}">${isAdmin?'관리자':'일반'}</span></td>
       <td><span class="mono">${esc(a.user)}</span></td>
       <td>${a.name?esc(a.name):'<span style="color:var(--muted)">-</span>'}</td>
@@ -1051,9 +1060,19 @@ function deleteAcct(idx){ const a=(state.accounts||[])[idx]; if(!a) return;
   const reg=deptsForUser(a.user);
   const msg=reg.length?`계정 '${a.user}'을(를) 삭제할까요?\n현재 ${reg.length}개 전형(${reg.map(d=>d.name).join(", ")})에 등록되어 있으며, 등록도 함께 해제됩니다.`:`계정 '${a.user}'을(를) 삭제할까요?`;
   if(!confirm(msg)) return;
-  state.accounts.splice(idx,1);
-  state.departments.forEach(d=>{ d.accountUsers=(d.accountUsers||[]).filter(u=>u!==a.user); });
+  removeAccountsByUser([a.user]);
   saveState(); renderAll(); toast("계정이 삭제되었습니다.");
+}
+function toggleAllAcct(cb){ document.querySelectorAll("#manageBody .acct-cb").forEach(x=>{ x.checked=cb.checked; }); }
+function removeAccountsByUser(users){ const set=new Set(users); state.accounts=(state.accounts||[]).filter(a=>!set.has(a.user)); state.departments.forEach(d=>{ d.accountUsers=(d.accountUsers||[]).filter(u=>!set.has(u)); }); }
+function deleteSelectedAccts(){
+  const idxs=[...document.querySelectorAll("#manageBody .acct-cb:checked")].map(cb=>+cb.value);
+  if(!idxs.length){ toast("삭제할 계정을 선택하세요."); return; }
+  const accs=idxs.map(i=>(state.accounts||[])[i]).filter(Boolean);
+  const regTotal=accs.reduce((n,a)=>n+deptsForUser(a.user).length,0);
+  if(!confirm(`선택한 ${accs.length}개 계정을 삭제하시겠습니까?\n· ${accs.map(a=>a.user+(a.name?`(${a.name})`:'')).join(", ")}${regTotal?`\n· 전형 등록 ${regTotal}건도 함께 해제됩니다.`:''}`)) return;
+  removeAccountsByUser(accs.map(a=>a.user));
+  saveState(); renderAll(); toast(`${accs.length}개 계정이 삭제되었습니다.`);
 }
 
 function acctBulkRowHTML(r){ r=r||{};
@@ -1144,6 +1163,7 @@ function ivSessionRowHTML(s){ s=s||{};
     <div class="ivs-f"><label>종료</label><input class="ivs-te" type="text" maxlength="5" placeholder="15:30" value="${esc(s.te||'')}"></div>
     <div class="ivs-f wide"><label>장소</label><input class="ivs-place" value="${esc(s.place||'')}" placeholder="예: 본사 3층 면접실 A"></div>
     <div class="ivs-f wide"><label>참석 면접관 <span style="font-weight:400">· 여러 명 쉼표로</span></label><input class="ivs-panel" value="${esc(s.panel||'')}" placeholder="예: 영업1팀장, 인사팀장"></div>
+    <div class="ivs-f wide"><label>배석자 <span style="font-weight:400">· 이 회차 배석</span></label><input class="ivs-obs" value="${esc(s.obs||'')}" placeholder="예: 인사팀 김주임"></div>
   </div><button type="button" class="ivs-del" title="삭제" onclick="this.closest('.ivs-row').remove()">×</button></div>`;
 }
 function addIvSession(){ document.getElementById("iv_sessions").insertAdjacentHTML("beforeend", ivSessionRowHTML({round:"통합"})); }
@@ -1161,7 +1181,6 @@ function openDeptModal(i){
   const ivv=(d&&d.schedule&&d.schedule["면접전형"])||{};
   const ivSessions=(ivv.sessions&&ivv.sessions.length)?ivv.sessions:[];
   document.getElementById("iv_sessions").innerHTML = ivSessions.length ? ivSessions.map(s=>ivSessionRowHTML(s)).join("") : `<div class="ivs-empty">등록된 면접 세션이 없습니다. 아래 ‘+ 면접 세션 추가’로 등록하세요.</div>`;
-  document.getElementById("iv_obs").value=ivv.observers||"";
   document.getElementById("f_accounts").innerHTML=accountPickHTML(d?d.accountUsers:[]);
   if((state.accounts||[]).length){ renderAvail(); renderPicked(); }
   document.getElementById("f_notes").value=d?d.notes:"";
@@ -1186,14 +1205,17 @@ function saveDept(){
     const date=r.querySelector(".ivs-date").value.trim(); const round=r.querySelector(".ivs-round").value;
     const ts=r.querySelector(".ivs-ts").value, te=r.querySelector(".ivs-te").value;
     const place=r.querySelector(".ivs-place").value.trim(), panel=r.querySelector(".ivs-panel").value.trim();
-    if(date||ts||te||place||panel) ivSessions.push({round,date,ts,te,place,panel});
+    const obsEl=r.querySelector(".ivs-obs"); const obs=obsEl?obsEl.value.trim():"";
+    if(date||ts||te||place||panel||obs) ivSessions.push({round,date,ts,te,place,panel,obs});
   });
   schedule["면접전형"].sessions=ivSessions;
-  schedule["면접전형"].observers=document.getElementById("iv_obs").value.trim();
+  schedule["면접전형"].observers="";
   const obj={ name, type:document.getElementById("f_type").value, reqCount:+document.getElementById("f_req").value||1, ftTO:+document.getElementById("f_fto").value||0,
     stage:document.getElementById("f_stage").value, schedule, accountUsers, notes:document.getElementById("f_notes").value.trim(),
     counts:{ applicants:+document.getElementById("f_c_applicants").value||0, doc:+document.getElementById("f_c_doc").value||0, ai:+document.getElementById("f_c_ai").value||0, hired:+document.getElementById("f_c_hired").value||0 }, updated:today() };
-  if(editingId){ Object.assign(getDept(editingId),obj); } else{ obj.id=id(); state.departments.push(obj); }
+  let dref;
+  if(editingId){ dref=getDept(editingId); Object.assign(dref,obj); } else{ obj.id=id(); obj.checklist=obj.checklist||{}; state.departments.push(obj); dref=obj; }
+  autoCheckPriorColumns(dref);
   saveState(); closeDeptModal(); renderAll(); toast(editingId?"저장되었습니다.":"전형이 추가되었습니다.");
 }
 
@@ -1212,10 +1234,12 @@ function addBulkRow(r){ document.getElementById("bulkRows").insertAdjacentHTML("
 function openBulkModal(){ const c=document.getElementById("bulkRows"); c.innerHTML=""; for(let i=0;i<3;i++) addBulkRow(); document.getElementById("bulkPreview").innerHTML="부서명을 입력하면 미리보기가 표시됩니다."; document.getElementById("bulkModal").classList.remove("hidden"); }
 function closeBulkModal(){ document.getElementById("bulkModal").classList.add("hidden"); }
 function collectBulkRows(){ const rows=[]; document.querySelectorAll("#bulkRows .bulk-row").forEach(r=>{ const name=r.querySelector(".bk-name").value.trim(); if(!name) return; rows.push({ name, type:r.querySelector(".bk-type").value, reqCount:+r.querySelector(".bk-req").value||1, stage:r.querySelector(".bk-stage").value }); }); return rows; }
-function renderBulkPreview(){ const rows=collectBulkRows(); const el=document.getElementById("bulkPreview"); el.innerHTML=rows.length?`<b style="color:var(--yh-green-dark)">${rows.length}개 전형</b>이 등록됩니다. 계정 아이디는 자동 생성, 접속코드는 0000으로 설정됩니다.`:"부서명을 입력하면 미리보기가 표시됩니다."; }
+function renderBulkPreview(){ const rows=collectBulkRows(); const el=document.getElementById("bulkPreview"); el.innerHTML=rows.length?`<b style="color:var(--yh-green-dark)">${rows.length}개 전형</b>이 등록됩니다. (계정은 ‘계정 관리’에서 별도로 만들어 전형에 등록하세요.)`:"부서명을 입력하면 미리보기가 표시됩니다."; }
+function sortDeptsByStage(){ state.departments.sort((a,b)=>STAGES.indexOf(b.stage)-STAGES.indexOf(a.stage)); }
 function saveBulk(){ const rows=collectBulkRows(); if(!rows.length){ toast("부서명을 1개 이상 입력하세요."); return; }
-  rows.forEach(r=>{ const u=genUser(); state.accounts.push({user:u,code:"0000",name:"",title:"",dept:r.name,role:"normal",createdAt:today()});
-    state.departments.push({ id:id(), name:r.name, type:r.type, reqCount:r.reqCount, ftTO:0, stage:r.stage, schedule:emptySchedule(), accountUsers:[u], notes:"", counts:{applicants:0,doc:0,ai:0,hired:0}, updated:today() }); });
+  rows.forEach(r=>{ const dept={ id:id(), name:r.name, type:r.type, reqCount:r.reqCount, ftTO:0, stage:r.stage, schedule:emptySchedule(), accountUsers:[], notes:"", counts:{applicants:0,doc:0,ai:0,hired:0}, checklist:{}, updated:today() };
+    autoCheckPriorColumns(dept); state.departments.push(dept); });
+  sortDeptsByStage();
   saveState(); closeBulkModal(); renderAll(); toast(`${rows.length}개 전형이 등록되었습니다.`); }
 
 /* ===== 다음 진행 항목(현황 자동화) ===== */
@@ -1256,6 +1280,28 @@ function boardColumns(d){
       items:["입사예정자 입사안내 메일 발송","각 부서 입사자 안내","입사자 교육","(선택)그룹웨어 게시판 게재"] }
   ];
 }
+const COL_NEXT={apply:"서류전형",doc:"AI역량검사",ai:"면접전형",interview:"입사",done:null};
+function colIndexForStage(stage){ if(stage==="공고준비"||stage==="공고진행")return 0; if(stage==="서류전형")return 1; if(stage==="AI역량검사")return 2; if(stage==="면접전형")return 3; return 4; }
+function colFullyDone(d,colId){ const col=boardColumns(d).find(c=>c.id===colId); if(!col)return false; const ck=d.checklist||{}; return col.items.length>0 && col.items.every((_,i)=>ck[colId+":"+i]); }
+// 현재 단계 기준 이전 컬럼들의 할 일을 모두 완료로 자동 반영(전형 세팅값을 다음 단계로 전달)
+function autoCheckPriorColumns(d){ d.checklist=d.checklist||{}; const ci=colIndexForStage(d.stage); boardColumns(d).forEach((col,idx)=>{ if(idx<ci) col.items.forEach((_,i)=>{ d.checklist[col.id+":"+i]=true; }); }); }
+function advanceStageIfColumnDone(d,colId){ if(!colFullyDone(d,colId))return false; const next=COL_NEXT[colId]; if(!next)return false; if(STAGES.indexOf(next)>STAGES.indexOf(d.stage)){ d.stage=next; autoCheckPriorColumns(d); return true; } return false; }
+function completeColumn(deptId,colId){ const d=getDept(deptId); if(!d)return; const col=boardColumns(d).find(c=>c.id===colId); if(!col)return;
+  if(!confirm(`'${col.title}' 단계의 할 일을 모두 완료 처리하시겠습니까?`)) return;
+  d.checklist=d.checklist||{}; col.items.forEach((_,i)=>{ d.checklist[colId+":"+i]=true; });
+  let justCompleted=false;
+  if(colId==="done"){ d.completed=true; d.completedAt=today(); justCompleted=true; }
+  const advanced=advanceStageIfColumnDone(d,colId);
+  d.updated=today(); saveState();
+  const sc=document.querySelector(".board-scroll"); const sl=sc?sc.scrollLeft:0;
+  const bs=document.getElementById("boardStage"); if(bs) bs.textContent=`현재 단계 · ${d.stage}`;
+  document.getElementById("boardCols").innerHTML=renderBoardCols(d);
+  const sc2=document.querySelector(".board-scroll"); if(sc2) sc2.scrollLeft=sl;
+  renderAll();
+  if(justCompleted) toast(`${d.name} 채용 전형이 완료 처리되었습니다. ‘완료된 전형’ 탭으로 이동했습니다.`);
+  else if(advanced) toast(`${col.title} 일괄 완료 → ${d.stage} 단계로 진행되었습니다.`);
+  else toast(`${col.title} 일괄 완료 처리되었습니다.`);
+}
 function renderBoardCols(d){
   const cols=boardColumns(d); const ck=d.checklist||{};
   let nextKey=null;
@@ -1272,8 +1318,10 @@ function renderBoardCols(d){
       </div>`;
     }).join('<div class="chk-conn"></div>');
     const link= col.report ? `<div class="sum-link" onclick="openReport('${d.id}')" style="cursor:pointer"><span>채용 성과 리포트</span><span class="ic">↗</span></div>` : '';
+    const allDone=doneCount===total;
     return `<div class="board-col"><div class="col-card ${col.title===activeCol?'active':''}">
       <div class="col-head"><div class="col-icon">${col.icon}</div><div class="col-title">${esc(col.title)}</div><div class="col-prog">${doneCount}/${total} 완료</div></div>
+      <button class="col-allbtn ${allDone?'done':''}" ${allDone?'disabled':''} onclick="completeColumn('${d.id}','${col.id}')">${allDone?'완료됨 ✓':'일괄 완료'}</button>
       ${col.summary.map(r=>`<div class="sum-row"><span class="k">${esc(r[0])}</span><span class="v">${esc(r[1])}</span></div>`).join("")}${link}
     </div>${items}</div>`;
   }).join("");
@@ -1290,14 +1338,17 @@ function toggleCheck(deptId,colId,idx){
   const d=getDept(deptId); if(!d) return; if(!d.checklist) d.checklist={};
   const key=colId+":"+idx; d.checklist[key]=!d.checklist[key];
   const cols=boardColumns(d); const doneCol=cols.find(c=>c.id==="done"); const lastIdx=doneCol?doneCol.items.length-1:-1;
-  let justCompleted=false;
+  let justCompleted=false, advanced=false;
   if(colId==="done" && idx===lastIdx){ d.completed=!!d.checklist[key]; d.completedAt=d.completed?today():""; justCompleted=d.completed; }
+  if(d.checklist[key]) advanced=advanceStageIfColumnDone(d,colId);
   d.updated=today(); saveState();
   const sc=document.querySelector(".board-scroll"); const sl=sc?sc.scrollLeft:0;
+  const bs=document.getElementById("boardStage"); if(bs) bs.textContent=`현재 단계 · ${d.stage}`;
   document.getElementById("boardCols").innerHTML=renderBoardCols(d);
   if(sc) sc.scrollLeft=sl;
   renderAll();
   if(justCompleted) toast(`${d.name} 채용 전형이 완료 처리되었습니다. ‘완료된 전형’ 탭으로 이동했습니다.`);
+  else if(advanced) toast(`${d.name} → ${d.stage} 단계로 진행되었습니다.`);
 }
 function openReport(deptId){
   const d=getDept(deptId); if(!d) return; const c=d.counts||{};
@@ -1326,11 +1377,12 @@ function openCalEvent(deptId,stage){
     if(sess.length){
       body+=`<div class="cev-sub">면접 세션 (${sess.length}회)</div>`;
       sess.slice().sort((a,b)=>(a.date||"").localeCompare(b.date||"")).forEach(s=>{
+        const obs=s.obs||v.observers||"";
+        const det=[s.place?`장소 · ${esc(s.place)}`:'', s.panel?`참석 면접관 · ${esc(s.panel)}`:'', obs?`배석자 · ${esc(obs)}`:''].filter(Boolean).join("<br>");
         body+=`<div class="cev-sess"><div class="cev-sess-h"><b>${esc(s.round||'면접')}</b><span>${esc(s.date||'-')}${sessTime(s)?(' · '+esc(sessTime(s))):''}</span></div>`+
-          `${(s.place||s.panel)?`<div class="cev-sess-d">${s.place?`장소 · ${esc(s.place)}`:''}${(s.place&&s.panel)?'<br>':''}${s.panel?`참석 면접관 · ${esc(s.panel)}`:''}</div>`:''}</div>`;
+          `${det?`<div class="cev-sess-d">${det}</div>`:''}</div>`;
       });
     }
-    if(v.observers) body+=`<div class="cev-row"><span class="k">배석자</span><span class="v">${esc(v.observers)}</span></div>`;
   }
   document.getElementById("calEventBody").innerHTML=body;
   document.getElementById("calEventModal").classList.remove("hidden");
@@ -1531,12 +1583,18 @@ function openCalGroup(ids,stage){
 function adminCalMove(delta){ let m=adminCal.m+delta,y=adminCal.y; if(m<0){m=11;y--;} if(m>11){m=0;y++;} adminCal={y,m}; renderScheduleTab(); }
 function teamCalMove(delta){ let m=teamCal.m+delta,y=teamCal.y; if(m<0){m=11;y--;} if(m>11){m=0;y++;} teamCal={y,m}; const d=getDept(teamViewDeptId); if(!d) return; document.getElementById("teamCalWrap").innerHTML=calendarHTML([d],teamCal.y,teamCal.m,"teamCalMove"); }
 function interviewAgendaHTML(depts,title){
-  const items=[];
-  depts.forEach(d=>{ const iv=(d.schedule&&d.schedule["면접전형"])||{}; (iv.sessions||[]).forEach(s=>{ if(s.date||s.ts||s.place||s.panel) items.push({name:d.name,round:s.round,date:s.date,time:sessTime(s),place:s.place,panel:s.panel,obs:iv.observers}); }); });
-  items.sort((a,b)=>(a.date||"").localeCompare(b.date||"")||(a.time||"").localeCompare(b.time||""));
-  if(!items.length) return "";
+  // 같은 부서의 1·2차 면접은 한 행으로 병합(셀 안에 회차별로 줄바꿈 표시)
+  const rows=[];
+  depts.forEach(d=>{ const iv=(d.schedule&&d.schedule["면접전형"])||{};
+    const sess=(iv.sessions||[]).filter(s=>s.date||s.ts||s.place||s.panel||s.obs).slice()
+      .sort((a,b)=>(a.date||"").localeCompare(b.date||"")||(sessTime(a)||"").localeCompare(sessTime(b)||""));
+    if(sess.length) rows.push({d, sess, firstDate:sess[0].date||""});
+  });
+  rows.sort((a,b)=>(a.firstDate||"").localeCompare(b.firstDate||""));
+  if(!rows.length) return "";
+  const ml=arr=>arr.map(x=>esc(x&&String(x).trim()?x:'-')).join("<br>");
   return `<div class="section-title" style="margin-top:22px">${title||"면접 일정 상세"}</div><div class="panel"><table><thead><tr><th>면접일</th><th>회차</th><th>진행 시간</th><th>부서</th><th>장소</th><th>참석 면접관</th><th>배석자</th></tr></thead><tbody>`+
-    items.map(i=>`<tr><td><b>${i.date||'-'}</b></td><td>${esc(i.round||'-')}</td><td>${esc(i.time||'-')}</td><td>${esc(i.name)}</td><td>${esc(i.place||'-')}</td><td>${esc(i.panel||'-')}</td><td>${esc(i.obs||'-')}</td></tr>`).join("")+`</tbody></table></div>`;
+    rows.map(r=>`<tr><td><b>${ml(r.sess.map(s=>s.date))}</b></td><td>${ml(r.sess.map(s=>s.round))}</td><td>${ml(r.sess.map(s=>sessTime(s)))}</td><td>${esc(r.d.name)}</td><td>${ml(r.sess.map(s=>s.place))}</td><td>${ml(r.sess.map(s=>s.panel))}</td><td>${ml(r.sess.map(s=>s.obs))}</td></tr>`).join("")+`</tbody></table></div>`;
 }
 function renderScheduleTab(){
   if(!adminCal) adminCal=defMonth(state.departments);
@@ -1664,8 +1722,7 @@ function renderTeamDetail(deptId){
     return `<tr class="${cur?'cur':''}"><td>${s}${cur?' <span class="nowtag">진행중</span>':''}</td><td>${v.s||'-'}</td><td>${cfg.e?(v.e||'-'):'<span style="color:var(--muted)">당일</span>'}</td></tr>`; }).join("");
   const iv=(d.schedule&&d.schedule["면접전형"])||{}; const sess=(iv.sessions||[]).slice().sort((a,b)=>(a.date||"").localeCompare(b.date||""));
   const ivBlock=(sess.length||iv.observers)?`<div class="panel" style="padding:22px 24px;margin-bottom:22px"><div class="section-title">면접 정보</div>
-    ${sess.length?`<table class="sched-ro"><thead><tr><th>면접일</th><th>회차</th><th>진행 시간</th><th>장소</th><th>참석 면접관</th></tr></thead><tbody>${sess.map(s=>`<tr><td><b>${s.date||'-'}</b></td><td>${esc(s.round||'-')}</td><td>${esc(sessTime(s)||'-')}</td><td>${esc(s.place||'-')}</td><td>${esc(s.panel||'-')}</td></tr>`).join("")}</tbody></table>`:`<div style="font-size:13px;color:var(--muted)">등록된 면접 세션이 없습니다.</div>`}
-    ${iv.observers?`<div style="margin-top:12px;font-size:13px;color:var(--text)"><span style="color:var(--muted)">배석자 · </span><b>${esc(iv.observers)}</b></div>`:""}</div>`:"";
+    ${sess.length?`<table class="sched-ro"><thead><tr><th>면접일</th><th>회차</th><th>진행 시간</th><th>장소</th><th>참석 면접관</th><th>배석자</th></tr></thead><tbody>${sess.map(s=>`<tr><td><b>${s.date||'-'}</b></td><td>${esc(s.round||'-')}</td><td>${esc(sessTime(s)||'-')}</td><td>${esc(s.place||'-')}</td><td>${esc(s.panel||'-')}</td><td>${esc(s.obs||iv.observers||'-')}</td></tr>`).join("")}</tbody></table>`:`<div style="font-size:13px;color:var(--muted)">등록된 면접 세션이 없습니다.</div>`}</div>`:"";
   document.getElementById("teamContent").innerHTML=`
     <button class="btn-ghost" style="margin-bottom:16px" onclick="renderTeamHome()">← 전형 목록</button>
     <div class="tl-hero"><div class="eyebrow">${esc(d.type)} · 채용요청 ${d.reqCount}명${d.ftTO?` · 정규직 TO ${d.ftTO}명`:''}</div><h1>${esc(d.name)} 채용 현황</h1>
