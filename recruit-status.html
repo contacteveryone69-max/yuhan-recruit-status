@@ -387,6 +387,53 @@
   .ats-info b{color:var(--yh-green-dark)}
   .ats-info .ats-mono{font-family:var(--mono,monospace);background:#f1f6f2;padding:1px 7px;border-radius:6px;font-weight:700}
   .ats-info .ats-note{color:var(--muted);font-size:12px}
+  /* 기타 업무 (할 일) */
+  .tk-add{display:flex;gap:10px;padding:16px 18px;margin-bottom:16px;align-items:center;flex-wrap:wrap}
+  .tk-addtitle{flex:1;min-width:220px;padding:10px 13px;border:1px solid var(--line);border-radius:9px;font-size:14px;outline:none;background:#fff}
+  .tk-addtitle:focus{border-color:var(--yh-green-light)}
+  .tk-adddate{width:200px;padding:10px 13px;border:1px solid var(--line);border-radius:9px;font-size:14px;outline:none;background:#fff}
+  .tk-adddate:focus{border-color:var(--yh-green-light)}
+  .tk-summary{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+  .tk-chip{background:#fff;border:1px solid var(--line);border-radius:999px;padding:7px 15px;font-size:13px;color:var(--muted);font-weight:600}
+  .tk-chip b{color:var(--ink);font-weight:800;margin-left:3px}
+  .tk-chip.over{border-color:#f0c8c5;background:#fdf1f0;color:var(--danger)}.tk-chip.over b{color:var(--danger)}
+  .tk-chip.today{border-color:var(--yh-green-light);background:var(--yh-green-tint);color:var(--yh-green-dark)}.tk-chip.today b{color:var(--yh-green-dark)}
+  .tk-gh{font-size:12.5px;font-weight:700;color:var(--ink);margin:18px 2px 9px;display:flex;align-items:center;gap:8px}
+  .tk-gh::before{content:"";width:4px;height:14px;background:var(--yh-green);border-radius:2px}
+  .tk-gh.done-h{color:var(--muted)}.tk-gh.done-h::before{background:var(--muted)}
+  .tk-list{display:flex;flex-direction:column;gap:10px}
+  .tk-card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:13px 15px;box-shadow:var(--shadow)}
+  .tk-card.over{border-left:4px solid var(--danger)}
+  .tk-card.done{background:#f7f9f7;opacity:.78}
+  .tk-main{display:flex;align-items:flex-start;gap:11px}
+  .tk-check{flex-shrink:0;width:24px;height:24px;border-radius:7px;border:2px solid var(--line);background:#fff;cursor:pointer;color:#fff;font-size:14px;font-weight:800;line-height:1;display:flex;align-items:center;justify-content:center;margin-top:1px}
+  .tk-check:hover{border-color:var(--yh-green)}
+  .tk-check.on{background:var(--yh-green);border-color:var(--yh-green)}
+  .tk-body{flex:1;min-width:0}
+  .tk-title{font-size:14.5px;font-weight:700;color:var(--ink);word-break:break-word}
+  .tk-card.done .tk-title{text-decoration:line-through;color:var(--muted)}
+  .tk-meta{display:flex;align-items:center;gap:8px;margin-top:5px;flex-wrap:wrap}
+  .tk-badge{font-size:11.5px;font-weight:700;padding:2px 9px;border-radius:6px;background:var(--bg);color:var(--muted)}
+  .tk-badge.over{background:#fdf1f0;color:var(--danger)}
+  .tk-badge.today{background:var(--yh-green-tint);color:var(--yh-green-dark)}
+  .tk-badge.soon{background:#eef3fb;color:#2f6bbf}
+  .tk-prog{font-size:11.5px;color:var(--muted);font-weight:600}
+  .tk-del{flex-shrink:0;border:1px solid #eccecc;background:#fff;color:var(--danger);border-radius:7px;font-size:12px;font-weight:600;padding:5px 10px;cursor:pointer}
+  .tk-del:hover{background:#fbf0ef}
+  .tk-subs{list-style:none;margin:10px 0 0;padding:0 0 0 35px;display:flex;flex-direction:column;gap:5px}
+  .tk-sub{display:flex;align-items:center;gap:9px}
+  .tk-cb{flex-shrink:0;width:19px;height:19px;border-radius:5px;border:1.5px solid var(--line);background:#fff;cursor:pointer;color:#fff;font-size:11px;font-weight:800;line-height:1;display:flex;align-items:center;justify-content:center}
+  .tk-cb:hover{border-color:var(--yh-green)}
+  .tk-sub.done .tk-cb{background:var(--yh-green);border-color:var(--yh-green)}
+  .tk-sub-t{flex:1;min-width:0;font-size:13px;color:var(--text);word-break:break-word}
+  .tk-sub.done .tk-sub-t{text-decoration:line-through;color:var(--muted)}
+  .tk-x{flex-shrink:0;border:none;background:none;color:var(--muted);cursor:pointer;font-size:16px;line-height:1;padding:0 4px}
+  .tk-x:hover{color:var(--danger)}
+  .tk-subadd{display:flex;gap:7px;margin:9px 0 2px;padding-left:35px}
+  .tk-subinput{flex:1;min-width:0;padding:7px 11px;border:1px dashed var(--line);border-radius:8px;font-size:12.5px;outline:none;background:var(--bg)}
+  .tk-subinput:focus{border-color:var(--yh-green-light);border-style:solid;background:#fff}
+  .tk-subbtn{flex-shrink:0;border:1px solid var(--line);background:#fff;color:var(--text);border-radius:8px;font-size:12px;font-weight:600;padding:6px 12px;cursor:pointer}
+  .tk-subbtn:hover{background:var(--yh-green-tint);border-color:var(--yh-green-light)}
   .iv-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
   .iv-c{background:var(--yh-green-tint);border:1px solid var(--yh-green-light);border-radius:10px;padding:12px 14px}
   .iv-c .l{font-size:11.5px;color:var(--muted)}.iv-c .v{font-size:14px;font-weight:700;color:var(--ink);margin-top:3px}
@@ -438,6 +485,7 @@
       <button class="tab" data-tab="mail" onclick="switchTab('mail')">메일 작성</button>
       <button class="tab" data-tab="stats" onclick="switchTab('stats')">통계</button>
       <button class="tab" data-tab="sched" onclick="switchTab('sched')">일정표</button>
+      <button class="tab" data-tab="tasks" onclick="switchTab('tasks')">기타 업무</button>
     </div>
 
     <section id="tab-dash">
@@ -497,6 +545,16 @@
     <section id="tab-sched" class="hidden">
       <div class="page-head"><div><h1>전형 일정표</h1><div class="sub">전형별 색상과 기간을 타임라인으로 표시합니다. 면접 장소·면접관·배석자도 함께 확인할 수 있습니다.</div></div></div>
       <div id="schedResult"></div>
+    </section>
+
+    <section id="tab-tasks" class="hidden">
+      <div class="page-head"><div><h1>기타 업무</h1><div class="sub">채용 외 업무를 자유롭게 등록하고 상세 업무로 나눠 체크합니다. 일자별로 정렬되며 지연·오늘 마감을 자동 표시해 업무 누락을 방지합니다.</div></div></div>
+      <div class="tk-add panel">
+        <input id="taskTitle" class="tk-addtitle" placeholder="업무 내용 (예: OOO 사원 근로계약서 작성)" onkeydown="if(event.key==='Enter')addTask()">
+        <input id="taskDue" class="tk-adddate" type="text" inputmode="numeric" maxlength="10" placeholder="일자 (YYYY-MM-DD, 선택)" oninput="this.value=maskDate(this.value)" onkeydown="if(event.key==='Enter')addTask()">
+        <button class="btn-primary" style="width:auto;padding:10px 24px;margin:0" onclick="addTask()">등록</button>
+      </div>
+      <div id="tasksResult"></div>
     </section>
   </div>
   <div class="footer">유한양행 채용 전형 현황 시스템 · 프로토타입 · 데이터는 이 브라우저에만 저장됩니다.</div>
@@ -686,6 +744,9 @@ function migrateV1(old){
 }
 function normalize(st){
   if(!Array.isArray(st.accounts)) st.accounts=[];
+  if(!Array.isArray(st.tasks)) st.tasks=[];
+  st.tasks.forEach(t=>{ if(!Array.isArray(t.subs)) t.subs=[]; if(typeof t.done!=="boolean") t.done=false; if(t.due==null) t.due=""; if(!t.id) t.id="tk"+Math.random().toString(36).slice(2,9); if(!t.createdAt) t.createdAt=today();
+    t.subs.forEach(s=>{ if(typeof s.done!=="boolean") s.done=false; if(!s.id) s.id="ts"+Math.random().toString(36).slice(2,9); }); });
   (st.departments||[]).forEach(d=>{
     if(d.stage==="충원요청") d.stage="공고준비";
     if(d.stage==="공고 진행") d.stage="공고진행";
@@ -766,11 +827,12 @@ function enterApp(){
 /* ===== 탭 ===== */
 function switchTab(t){
   document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.tab===t));
-  ["dash","completed","manage","mail","stats","sched"].forEach(x=>document.getElementById("tab-"+x).classList.toggle("hidden",x!==t));
+  ["dash","completed","manage","mail","stats","sched","tasks"].forEach(x=>document.getElementById("tab-"+x).classList.toggle("hidden",x!==t));
   if(t==="completed") renderCompleted();
   if(t==="mail") initMail();
   if(t==="stats") computeStats();
   if(t==="sched"){ const t0=new Date(); adminCal={y:t0.getFullYear(),m:t0.getMonth()}; renderScheduleTab(); }
+  if(t==="tasks") renderTasks();
 }
 
 /* ===== 대시보드 ===== */
@@ -1244,6 +1306,64 @@ function openCalEvent(deptId,stage){
   document.getElementById("calEventModal").classList.remove("hidden");
 }
 function closeCalEvent(){ document.getElementById("calEventModal").classList.add("hidden"); }
+
+/* ===== 기타 업무 (할 일) ===== */
+function newTkId(p){ return (p||"tk")+Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
+function addTask(){
+  const ti=document.getElementById("taskTitle"), di=document.getElementById("taskDue");
+  const title=ti.value.trim(); if(!title){ toast("업무 내용을 입력하세요."); ti.focus(); return; }
+  state.tasks.push({id:newTkId("tk"), title, due:di.value.trim(), done:false, createdAt:today(), subs:[]});
+  ti.value=""; di.value=""; saveState(); renderTasks(); ti.focus();
+}
+function toggleTask(id){ const t=(state.tasks||[]).find(x=>x.id===id); if(!t) return; t.done=!t.done; saveState(); renderTasks(); }
+function deleteTask(id){ const t=(state.tasks||[]).find(x=>x.id===id); if(!t) return; if(!confirm(`'${t.title}' 업무를 삭제하시겠습니까?`)) return; state.tasks=state.tasks.filter(x=>x.id!==id); saveState(); renderTasks(); }
+function addSub(id){ const inp=document.getElementById("sub_"+id); if(!inp) return; const text=inp.value.trim(); if(!text) return; const t=(state.tasks||[]).find(x=>x.id===id); if(!t) return; t.subs.push({id:newTkId("ts"), text, done:false}); saveState(); renderTasks(); const ni=document.getElementById("sub_"+id); if(ni) ni.focus(); }
+function toggleSub(tid,sid){ const t=(state.tasks||[]).find(x=>x.id===tid); if(!t) return; const s=t.subs.find(x=>x.id===sid); if(!s) return; s.done=!s.done; saveState(); renderTasks(); }
+function deleteSub(tid,sid){ const t=(state.tasks||[]).find(x=>x.id===tid); if(!t) return; t.subs=t.subs.filter(x=>x.id!==sid); saveState(); renderTasks(); }
+function taskDateBadge(due){
+  if(!due) return `<span class="tk-badge">기한 미지정</span>`;
+  const dn=dnum(due); if(dn==null) return `<span class="tk-badge">${esc(due)}</span>`;
+  const tn=dnum(today()); const diff=dn-tn;
+  if(diff<0) return `<span class="tk-badge over">지연 ${-diff}일 · ${esc(due)}</span>`;
+  if(diff===0) return `<span class="tk-badge today">오늘 마감 · ${esc(due)}</span>`;
+  return `<span class="tk-badge soon">${esc(due)} · D-${diff}</span>`;
+}
+function taskCardHTML(t){
+  const subDone=t.subs.filter(s=>s.done).length, subTot=t.subs.length;
+  const tn=dnum(today()), dn=t.due?dnum(t.due):null;
+  const cls=t.done?'done':((dn!=null&&dn<tn)?'over':'');
+  const subs=t.subs.map(s=>`<li class="tk-sub ${s.done?'done':''}"><button class="tk-cb" onclick="toggleSub('${t.id}','${s.id}')" title="완료 토글">${s.done?'✓':''}</button><span class="tk-sub-t">${esc(s.text)}</span><button class="tk-x" onclick="deleteSub('${t.id}','${s.id}')" title="상세 업무 삭제">×</button></li>`).join("");
+  return `<div class="tk-card ${cls}" data-id="${t.id}">
+    <div class="tk-main">
+      <button class="tk-check ${t.done?'on':''}" onclick="toggleTask('${t.id}')" title="${t.done?'완료 취소':'완료'}">${t.done?'✓':''}</button>
+      <div class="tk-body">
+        <div class="tk-title">${esc(t.title)}</div>
+        <div class="tk-meta">${taskDateBadge(t.due)}${subTot?`<span class="tk-prog">상세 ${subDone}/${subTot} 완료</span>`:''}</div>
+      </div>
+      <button class="tk-del" onclick="deleteTask('${t.id}')" title="업무 삭제">삭제</button>
+    </div>
+    <ul class="tk-subs">${subs}</ul>
+    <div class="tk-subadd"><input id="sub_${t.id}" class="tk-subinput" placeholder="상세 업무 추가 (예: EHR 근로계약서 배포) — Enter로 등록" onkeydown="if(event.key==='Enter')addSub('${t.id}')"><button class="tk-subbtn" onclick="addSub('${t.id}')">+ 추가</button></div>
+  </div>`;
+}
+function renderTasks(){
+  const el=document.getElementById("tasksResult"); if(!el) return;
+  const tasks=state.tasks||[]; const tn=dnum(today());
+  const inc=tasks.filter(t=>!t.done), don=tasks.filter(t=>t.done);
+  const over=inc.filter(t=>{ const d=t.due?dnum(t.due):null; return d!=null&&d<tn; }).length;
+  const tod=inc.filter(t=>{ const d=t.due?dnum(t.due):null; return d===tn; }).length;
+  const key=t=>{ const d=t.due?dnum(t.due):null; return d==null?Infinity:d; };
+  inc.sort((a,b)=>key(a)-key(b)||(a.createdAt||"").localeCompare(b.createdAt||""));
+  let html=`<div class="tk-summary"><span class="tk-chip">미완료 <b>${inc.length}</b></span><span class="tk-chip ${over?'over':''}">지연 <b>${over}</b></span><span class="tk-chip ${tod?'today':''}">오늘 마감 <b>${tod}</b></span><span class="tk-chip">완료 <b>${don.length}</b></span></div>`;
+  if(!tasks.length){ html+=`<div class="panel" style="padding:30px;color:var(--muted)">등록된 업무가 없습니다. 위 입력란에 업무를 추가하면 일자별로 정리됩니다.</div>`; el.innerHTML=html; return; }
+  if(inc.length){
+    let lastG=" "; html+=`<div class="tk-list">`;
+    inc.forEach(t=>{ const g=t.due||"__none"; if(g!==lastG){ lastG=g; html+=`</div><div class="tk-gh">${t.due?taskDateBadge(t.due).replace(/^<span[^>]*>/,'').replace(/<\/span>$/,''):'기한 미지정'}</div><div class="tk-list">`; } html+=taskCardHTML(t); });
+    html+=`</div>`;
+  }
+  if(don.length){ html+=`<div class="tk-gh done-h">완료된 업무 (${don.length})</div><div class="tk-list">`+don.map(taskCardHTML).join("")+`</div>`; }
+  el.innerHTML=html;
+}
 
 /* ===== 통계 ===== */
 function repDate(d){ const sc=d.schedule||{}; if(sc["공고진행"]&&sc["공고진행"].s) return sc["공고진행"].s; for(const s of STAGES){ if(sc[s]&&sc[s].s) return sc[s].s; } return d.updated||""; }
