@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>유한양행 채용 전형 현황 시스템 — 사용 안내</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net"/>
+<style>
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css");
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Pretendard","Apple SD Gothic Neo","Malgun Gothic",sans-serif;background:#fff;color:#16241C;-webkit-font-smoothing:antialiased;line-height:1.5}
+
+.page{width:210mm;min-height:297mm;margin:0 auto;padding:18mm 18mm 16mm;background:#fff}
+
+/* 헤더 */
+.pg-header{display:flex;align-items:center;justify-content:space-between;padding-bottom:12px;border-bottom:2.5px solid #00833D;margin-bottom:18px}
+.pg-title{display:flex;align-items:center;gap:11px}
+.pg-logo{width:38px;height:38px;border-radius:9px;background:#00833D;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pg-logo svg{width:22px;height:22px;fill:#fff}
+.pg-h1{font-size:17px;font-weight:700;color:#006A31}
+.pg-sub{font-size:11px;color:#6B7B71;margin-top:2px}
+.pg-badge{font-size:10.5px;background:#E9F4ED;color:#006A31;padding:4px 12px;border-radius:999px;font-weight:700;white-space:nowrap;border:1px solid #c6e3d0}
+
+/* 채용 단계 흐름 */
+.section-label{font-size:10px;font-weight:700;color:#6B7B71;letter-spacing:.7px;text-transform:uppercase;margin-bottom:8px}
+.flow-row{display:flex;align-items:center;gap:0;margin-bottom:6px}
+.flow-box{flex:1;text-align:center;padding:8px 3px;border-radius:7px;font-size:11.5px;font-weight:700}
+.flow-box small{display:block;font-size:9.5px;font-weight:400;margin-top:1px;opacity:.85}
+.flow-arrow{color:#9AA8A0;font-size:13px;padding:0 3px;flex-shrink:0}
+.f-s1{background:#F0F0F0;color:#444}
+.f-s2{background:#D4EAFA;color:#185FA5}
+.f-s3{background:#E8E5F8;color:#3C3489}
+.f-s4{background:#FBF1DD;color:#633806}
+.f-s5{background:#FAECE7;color:#712B13}
+.f-s6{background:#EAF3DE;color:#27500A}
+.tip-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:7px}
+.tip{display:flex;align-items:center;gap:4px;font-size:10.5px;color:#6B7B71;background:#F6F8F6;padding:4px 9px;border-radius:6px;border:1px solid #E2E9E4}
+.tip::before{content:"▸";color:#00833D}
+
+/* 구분선 */
+.divider{font-size:10px;font-weight:700;color:#6B7B71;letter-spacing:.6px;text-transform:uppercase;margin:14px 0 9px;display:flex;align-items:center;gap:8px}
+.divider::after{content:"";flex:1;height:0.5px;background:#E2E9E4}
+
+/* 카드 그리드 */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:11px}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;margin-bottom:11px}
+.card{background:#fff;border:1px solid #E2E9E4;border-radius:11px;padding:11px 13px}
+.card-h{display:flex;align-items:center;gap:7px;margin-bottom:9px;padding-bottom:7px;border-bottom:1px solid #F0F4F1}
+.card-h .icon{width:24px;height:24px;border-radius:6px;background:#E9F4ED;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.card-h .icon svg{width:14px;height:14px;stroke:#006A31;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.card-h span{font-size:12.5px;font-weight:700;color:#16241C;flex:1}
+.card-h .tag{font-size:9.5px;background:#E9F4ED;color:#006A31;padding:2px 7px;border-radius:999px;font-weight:700}
+.card-h .tag.gold{background:#FBF1DD;color:#633806}
+.item-row{display:flex;align-items:flex-start;gap:7px;padding:4px 0;border-bottom:0.5px solid #F0F4F1;font-size:11.5px;color:#26352C;line-height:1.45}
+.item-row:last-child{border-bottom:none}
+.item-row::before{content:"•";color:#00833D;font-size:12px;flex-shrink:0;margin-top:.5px}
+.item-row b{font-weight:700}
+.item-row small{color:#6B7B71;font-size:10.5px}
+
+/* 체크리스트 컬럼 */
+.cl-wrap{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-bottom:8px}
+.cl-col{border:1px solid #E2E9E4;border-radius:6px;padding:6px 7px;background:#F6F8F6}
+.cl-col .cl-name{font-size:10px;font-weight:700;color:#6B7B71;margin-bottom:4px;padding-bottom:3px;border-bottom:0.5px solid #E2E9E4}
+.cl-item{font-size:9.5px;color:#6B7B71;padding:2px 0;display:flex;align-items:center;gap:3px;line-height:1.3}
+.cl-item::before{content:"□";color:#9AA8A0;flex-shrink:0}
+.cl-more{font-size:9px;color:#9AA8A0;margin-top:2px}
+
+/* 계정 박스 */
+.acct-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.acct{background:#F6F8F6;border-radius:8px;padding:9px 11px;display:flex;align-items:center;gap:9px;border:1px solid #E2E9E4}
+.acct-icon{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.acct-icon.admin{background:#FBF1DD}
+.acct-icon.normal{background:#E9F4ED}
+.acct-icon svg{width:16px;height:16px;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;fill:none}
+.acct-icon.admin svg{stroke:#633806}
+.acct-icon.normal svg{stroke:#006A31}
+.acct-name{font-size:12px;font-weight:700;color:#16241C}
+.acct-id{font-size:10.5px;color:#6B7B71;font-family:ui-monospace,Consolas,monospace;margin-top:1px}
+.acct-role{display:inline-block;font-size:9.5px;padding:1px 6px;border-radius:999px;font-weight:700;margin-top:2px}
+.acct-role.admin{background:#FBF1DD;color:#633806}
+.acct-role.normal{background:#E9F4ED;color:#006A31}
+
+/* 권한 박스 */
+.perm-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:14px}
+.perm-box{border-radius:9px;padding:11px 13px;border:1px solid #E2E9E4}
+.perm-box.admin{background:#FFFBF3;border-color:#ECD9AE}
+.perm-box.normal{background:#F4FAF6;border-color:#c6e3d0}
+.perm-head{display:flex;align-items:center;gap:7px;margin-bottom:8px}
+.perm-head .pb-icon{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.perm-head .pb-icon.admin{background:#FBF1DD}
+.perm-head .pb-icon.normal{background:#E9F4ED}
+.perm-head .pb-icon svg{width:14px;height:14px;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.perm-head .pb-icon.admin svg{stroke:#633806}
+.perm-head .pb-icon.normal svg{stroke:#006A31}
+.perm-head span{font-size:12px;font-weight:700;color:#16241C}
+.perm-list{font-size:11px;color:#26352C;line-height:1.9}
+.perm-list li{list-style:none;display:flex;align-items:flex-start;gap:5px}
+.perm-list li::before{content:"✓";color:#00833D;flex-shrink:0;font-size:10px;margin-top:2px}
+
+/* 푸터 */
+.pg-footer{margin-top:14px;padding-top:11px;border-top:0.5px solid #E2E9E4;display:flex;align-items:center;justify-content:space-between}
+.footer-l{font-size:10px;color:#9AA8A0}
+.footer-pills{display:flex;gap:6px}
+.f-pill{font-size:10px;padding:3px 9px;border-radius:6px;background:#F6F8F6;color:#6B7B71;border:1px solid #E2E9E4}
+
+@media print{
+  body{margin:0;padding:0}
+  .page{margin:0;padding:14mm 15mm 13mm;width:100%}
+  @page{size:A4;margin:0}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- 헤더 -->
+  <div class="pg-header">
+    <div class="pg-title">
+      <div class="pg-logo">
+        <svg viewBox="0 0 24 24"><path d="M20 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2Z"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+      </div>
+      <div>
+        <div class="pg-h1">유한양행 채용 전형 현황 시스템</div>
+        <div class="pg-sub">부서별 채용 진행 단계를 한 화면에서 파악·관리하는 사내 웹 도구 · 사용 안내</div>
+      </div>
+    </div>
+    <span class="pg-badge">인사팀 전용 프로토타입</span>
+  </div>
+
+  <!-- 채용 단계 흐름 -->
+  <div class="section-label">채용 전형 단계</div>
+  <div class="flow-row">
+    <div class="flow-box f-s1">공고준비<small>일정 준비</small></div>
+    <div class="flow-arrow">›</div>
+    <div class="flow-box f-s2">공고진행<small>공고 게시 중</small></div>
+    <div class="flow-arrow">›</div>
+    <div class="flow-box f-s3">서류전형<small>지원서 검토</small></div>
+    <div class="flow-arrow">›</div>
+    <div class="flow-box f-s4">AI역량검사<small>온라인 검사</small></div>
+    <div class="flow-arrow">›</div>
+    <div class="flow-box f-s5">면접전형<small>면접 진행</small></div>
+    <div class="flow-arrow">›</div>
+    <div class="flow-box f-s6">입사<small>입사 처리</small></div>
+  </div>
+  <div class="tip-row">
+    <div class="tip">체크리스트 마지막 항목 완료 시 다음 단계로 자동 전환</div>
+    <div class="tip">단계 수동 변경 시 이전 단계 체크리스트 자동 완료</div>
+    <div class="tip">채용 종료 시 '완료된 전형' 탭으로 이동</div>
+  </div>
+
+  <div class="divider">주요 화면 기능</div>
+
+  <!-- 대시보드 + 보드 -->
+  <div class="two-col">
+    <div class="card">
+      <div class="card-h">
+        <div class="icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div>
+        <span>전형 현황 (대시보드)</span>
+        <span class="tag">메인 화면</span>
+      </div>
+      <div class="item-row"><b>단계 칩</b> — 단계별 전형 수 요약, 클릭으로 필터링</div>
+      <div class="item-row"><b>채용 현황표</b> — 단계별·채용형태별 그룹 표시<br><small>'자세히 보기'로 부서별 다음 할 일 확인</small></div>
+      <div class="item-row"><b>부서 카드</b> — 클릭 시 상세 보드 이동, 상단 그립(⠿)으로 드래그 순서 조정</div>
+      <div class="item-row"><b>일괄 일정 편집</b> — 여러 부서 선택 후 단계별 시작·마감일 한 번에 입력</div>
+      <div class="item-row"><b>전형 추가</b> / <b>일괄 등록</b> — 헤더 버튼에서 접근</div>
+    </div>
+    <div class="card">
+      <div class="card-h">
+        <div class="icon"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+        <span>전형 상세 보드</span>
+        <span class="tag">카드 클릭 시 진입</span>
+      </div>
+      <div class="cl-wrap">
+        <div class="cl-col"><div class="cl-name">지원·공고</div><div class="cl-item">공고문 작성</div><div class="cl-item">ATS 공고 등록</div><div class="cl-more">외 7항목</div></div>
+        <div class="cl-col"><div class="cl-name">서류전형</div><div class="cl-item">서류 검토</div><div class="cl-item">합격자 발표</div><div class="cl-more">외 5항목</div></div>
+        <div class="cl-col"><div class="cl-name">AI역량검사</div><div class="cl-item">검사 안내</div><div class="cl-item">결과 수령</div><div class="cl-more">외 4항목</div></div>
+        <div class="cl-col"><div class="cl-name">면접전형</div><div class="cl-item">레퍼런스 체크</div><div class="cl-item">면접 진행</div><div class="cl-more">외 10항목</div></div>
+        <div class="cl-col"><div class="cl-name">입사처리</div><div class="cl-item">입사 안내</div><div class="cl-item">게시판 게재</div><div class="cl-more">외 2항목</div></div>
+      </div>
+      <div class="item-row">컬럼별 <b>'일괄 완료'</b> 버튼으로 전체 완료 처리</div>
+      <div class="item-row">채용 성과 리포트 팝업 (지원자·합격·입사 현황)</div>
+    </div>
+  </div>
+
+  <!-- 일정표·통계·메일 -->
+  <div class="three-col">
+    <div class="card">
+      <div class="card-h">
+        <div class="icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+        <span>일정표</span>
+      </div>
+      <div class="item-row">월간 캘린더 — 단계별 연속 간트 바, 탭 진입 시 오늘 달 자동 이동</div>
+      <div class="item-row">바 클릭 → 부서 상세 팝업, 날짜 클릭 → 당일 현황 팝업</div>
+      <div class="item-row"><b>예정 면접 일정 표</b> — 오늘 이후만 표시, 가까운 날짜 순, 1·2차 한 행 병합</div>
+    </div>
+    <div class="card">
+      <div class="card-h">
+        <div class="icon"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+        <span>통계</span>
+      </div>
+      <div class="item-row">기간 필터 · KPI 요약 · 채용형태 분포 · 전형 퍼널</div>
+      <div class="item-row">부서별 상세표 (7컬럼) — 헤더 클릭 정렬</div>
+      <div class="item-row">팀 검색 · 페이지네이션 (15/30/50/전체)</div>
+    </div>
+    <div class="card">
+      <div class="card-h">
+        <div class="icon"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+        <span>메일 작성</span>
+      </div>
+      <div class="item-row"><b>부서안내</b> — 공고 문안 확인 요청 / 서류전형 평가자 안내</div>
+      <div class="item-row"><b>입사자안내</b> — (경력) 제출서류·절차 안내</div>
+      <div class="item-row">부서·날짜 선택 시 본문 자동 완성, 복사 버튼 제공</div>
+    </div>
+  </div>
+
+  <!-- 계정관리 + 기타업무 -->
+  <div class="two-col">
+    <div class="card">
+      <div class="card-h">
+        <div class="icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <span>계정 관리</span>
+        <span class="tag gold">관리자 전용</span>
+      </div>
+      <div class="acct-grid">
+        <div class="acct">
+          <div class="acct-icon admin"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+          <div>
+            <div class="acct-name">관리자 계정</div>
+            <div class="acct-id">admin / 0000</div>
+            <span class="acct-role admin">관리자</span>
+          </div>
+        </div>
+        <div class="acct">
+          <div class="acct-icon normal"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+          <div>
+            <div class="acct-name">일반 계정</div>
+            <div class="acct-id">예) sales1 / 0000</div>
+            <span class="acct-role normal">일반</span>
+          </div>
+        </div>
+      </div>
+      <div class="item-row">계정 생성은 전형과 독립 — 계정 관리 탭에서 먼저 생성</div>
+      <div class="item-row">전형 추가·편집 시 등록 계정 선택 (한 계정을 여러 전형에 등록 가능)</div>
+      <div class="item-row">정렬: 관리자 먼저 · 검색 (아이디·성명·부서) · 페이지네이션 (20/50/전체)</div>
+    </div>
+    <div class="card">
+      <div class="card-h">
+        <div class="icon"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+        <span>기타 업무</span>
+        <span class="tag gold">관리자 전용</span>
+      </div>
+      <div class="item-row"><b>'+ 오늘'·'+ 내일'</b> 버튼으로 날짜 입력 없이 빠르게 등록</div>
+      <div class="item-row">매일 <b>08:30</b>에 업무 기준일 전환 — 미완료 업무 다음날 자동 이월</div>
+      <div class="item-row">필터 탭: 전체 / 오늘 할 일 / 내일 할 일 / 완료</div>
+      <div class="item-row">카드 드래그로 순서 조정 · 중요 표시(빨강) · 상세 업무 추가·체크</div>
+    </div>
+  </div>
+
+  <div class="divider">접근 권한 안내</div>
+
+  <div class="perm-grid">
+    <div class="perm-box admin">
+      <div class="perm-head">
+        <div class="pb-icon admin"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <span>관리자 (admin / role=admin 계정)</span>
+      </div>
+      <ul class="perm-list">
+        <li>전체 탭 접근 — 전형 추가·편집·삭제·완료 처리</li>
+        <li>계정 생성·수정·삭제, 전형에 계정 등록</li>
+        <li>일괄 일정 편집, 일괄 전형 등록</li>
+        <li>메일 작성, 통계, 기타 업무, 완료된 전형 탭</li>
+      </ul>
+    </div>
+    <div class="perm-box normal">
+      <div class="perm-head">
+        <div class="pb-icon normal"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        <span>일반 계정 (role=normal)</span>
+      </div>
+      <ul class="perm-list">
+        <li>본인이 등록된 전형만 조회 (읽기 전용)</li>
+        <li>전형 카드 클릭 → 체크리스트·일정 상세 조회</li>
+        <li>완료된 전형은 목록에서 자동 숨김</li>
+        <li>편집·삭제·계정 관리 탭 접근 불가</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="pg-footer">
+    <div class="footer-l">유한양행 인사팀 · 채용 전형 현황 시스템 · 단일 HTML 프로토타입 (데이터: 브라우저 localStorage 저장)</div>
+    <div class="footer-pills">
+      <span class="f-pill">브라우저에서 바로 실행</span>
+      <span class="f-pill">별도 설치·서버 불필요</span>
+    </div>
+  </div>
+
+</div>
+
+<script>
+window.onload = function(){ window.print(); };
+</script>
+</body>
+</html>
